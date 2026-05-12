@@ -5,6 +5,64 @@ All notable changes to the Claude Skills Library will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.2] - 2026-05-12 — chief-data-officer-advisor: data strategy without surveys
+
+### Added — C-Level Advisory
+
+- **chief-data-officer-advisor** skill (`./c-level-advisor/skills/chief-data-officer-advisor/`) — opinionated, decision-driven CDO skill. Refuses to be a generic data-governance survey; instead answers four specific decisions:
+  1. **Can we train our model on this data?** (AI training data rights matrix)
+  2. **Warehouse, lakehouse, or mesh — and what do we build vs buy?** (data product strategy)
+  3. **What is our customer data worth?** (B2B customer-data-as-asset valuation + M&A multiplier)
+  4. **What data role do we hire next?** (data team org evolution)
+- **3 stdlib Python tools with deterministic logic** (not pattern-match prose):
+  - **`ai_training_data_audit.py`** — Audits data sources on 3 dimensions (origin × data class × use case). Returns GO/MITIGATE/NO-GO per source with risk, remediation, and GDPR Art. 6 + EU AI Act + US state citations. Embedded sample tests 7 sources spanning all 3 verdicts. Implements 6+ rule branches (scraped always NO-GO, regulated requires framework-specific consent, PII for fine-tuning requires explicit opt-in, etc.).
+  - **`data_product_strategy_picker.py`** — Picks warehouse/lakehouse/mesh from a company profile (stage, consumers, data volume, ML models, culture). Returns architecture + 6-layer build-vs-buy decisions (storage, ELT, modeling, BI, feature store, ML platform) + 12-month sequencing roadmap. Deterministic: same profile → same recommendation. Embedded sample (Series A B2B SaaS, 8 consumers, 4.5TB, 1 ML model) → LAKEHOUSE recommendation.
+  - **`data_asset_valuator.py`** — Computes strategic value 0-10 from 4 components (exclusivity, freshness, cohort breadth, history depth), derives moat strength (NONE/WEAK/MEDIUM/STRONG), applies M&A multiplier (1.0x–1.7x ARR depending on moat) with penalties for MSA carve-out rate and failed anonymization audit. Ranks 3 productization paths (benchmark report / embedding endpoint / direct license) by risk + viability. Embedded sample (B2B sales engagement corpus, 380 customers, 47 carve-outs) → 8.2/10 STRONG moat, 1.33-1.61x multiplier, recommends benchmark report as starting path.
+- **4 references answering one decision each** (not topic surveys):
+  - `ai_training_data_rights.md` — Decision: can we train on this source? Three-dimension matrix + GDPR Art. 6 lawful basis decision tree + EU AI Act high-risk triggers + US state patchwork (CCPA/CPRA, NYC LL 144, IL BIPA, WA MHMD).
+  - `data_product_strategy.md` — Decision: which architecture and what do we build? Stage-driven kill criteria per architecture + 6-layer build-vs-buy decision tree + sequencing pattern + anti-patterns.
+  - `customer_data_as_asset.md` — Decision: what's our data worth and can we productize it? 5-component valuation framework + M&A multiplier with carve-out impact + 3 productization paths with prerequisites + 10-item M&A diligence prep checklist + quarterly contractual constraint audit pattern.
+  - `data_team_org_evolution.md` — Decision: what role next, when to centralize vs embed? 5-stage map (seed → late-stage) with specific role definitions + centralize-vs-embed-vs-federated triggers + 6 anti-patterns ("hiring data scientist as first data hire" etc.).
+- **cs-cdo-advisor** agent (`./c-level-advisor/c-level-agents/agents/cs-cdo-advisor.md`) — decision-driven realist orchestrating the skill. Voice: "What decision does this data drive?" Refuses to recommend tooling before naming the consumer. Treats AI training data as both contractual liability and strategic asset.
+- **`/cs:cdo-review`** slash command (`./c-level-advisor/c-level-agents/skills/cdo-review/SKILL.md`) — 6-question forcing interrogation pattern matching the /cs:cfo-review / /cs:gc-review etc. shape.
+- **cs-cdo-advisor voice spec** added to `persona-voices.md`.
+
+### Why This Matters
+
+By 2026 every B2B SaaS founder is asking three questions the existing C-level skills can't fully answer:
+1. **"Can we train our model on customer data?"** — overlaps cs-ciso (security), cs-general-counsel (contracts), and engineering (tactics), but none of them owns the strategic data picture.
+2. **"What's the right data architecture — and when?"** — engineering's database-designer and observability-designer cover tactics, but the warehouse-vs-lakehouse-vs-mesh decision is stage-driven, not technology-driven.
+3. **"What's our data actually worth in M&A?"** — this comes up at every Series B+ and has no home in existing skills.
+
+This skill fills that gap with **deterministic decision logic** (not survey prose), explicit kill criteria, and a hard rule against duplicating engineering data skills.
+
+### Built with Karpathy-Coder Discipline
+
+This PR was the first in this repo built under explicit karpathy-coder guidance:
+- **Principle 1 (Think before coding):** assumptions surfaced upfront, verifiable success criteria locked before any file was written.
+- **Principle 2 (Simplicity first):** rejected "generic governance survey" framing; each tool/reference covers ONE decision; refused to add scope ("data product strategy picker" doesn't try to also do data quality, RAG, or schema design).
+- **Principle 3 (Surgical changes):** touched only the files in the locked plan. Caught one scope-creep attempt (adding cs-general-counsel-advisor voice spec while editing persona-voices.md) and reverted it — that gap belongs in a separate PR.
+- **Principle 4 (Goal-driven execution):** all 3 Python tools smoke-tested with embedded samples before commit (audit: 7 sources → 2 NO-GO / 2 MITIGATE / 3 GO; strategy picker: Series A → LAKEHOUSE; valuator: 8.2/10 STRONG moat).
+
+### Changed
+
+- **Total skills:** 264 → 265 (+1 chief-data-officer-advisor)
+- **cs-* agents:** 29 → 30 (+1 cs-cdo-advisor in c-level-agents plugin)
+- **/cs:* slash commands:** 17 → 18 (+1 /cs:cdo-review)
+- **Python tools:** 361 → 364 (+3 in chief-data-officer-advisor/scripts/)
+- **References:** 490 → 494 (+4 in chief-data-officer-advisor/references/)
+- **c-level-skills** plugin: v2.5.1 → v2.5.2 (description expanded; 29 → 30 skills, 9 → 10 cs-* agents)
+- **c-level-agents** plugin: v1.1.0 → v1.2.0 (description expanded with CDO; new agent; +`chief-data-officer`, `cdo`, `ai-training-data`, `data-product-strategy`, `data-as-asset` keywords)
+
+### Known follow-ups (NOT included this PR per surgical scope)
+
+- The `cs-general-counsel-advisor` voice spec is missing from `persona-voices.md` (introduced in v2.5.1 but not added to the voice reference). Will be addressed in a separate small PR alongside other voice cleanup.
+- Phase 2 remainder (4 more C-roles: CAIO AI, CCO customer, VPE engineering execution, CCO comms) deferred to v2.5.3+.
+
+### Disclaimer
+
+The `chief-data-officer-advisor` skill surfaces strategic decisions but is **not legal advice** for AI training, **not a replacement for outside counsel** for productization/licensing decisions, and **not a tactical data engineering skill**. For tactical data engineering, see the engineering/ domain (`database-designer`, `observability-designer`, `data-quality-auditor`, `sql-database-assistant`, `rag-architect`, `llm-cost-optimizer`).
+
 ## [2.5.1] - 2026-05-12 — general-counsel-advisor: the gstack-can't-touch lane
 
 ### Added — C-Level Advisory

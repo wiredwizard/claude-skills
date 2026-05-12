@@ -1,7 +1,7 @@
 {
   "name": "c-level-agents",
-  "description": "Founder-mode executive team plugin: 9 cs-* C-suite agents (CFO, CMO, CRO, CPO, COO, CHRO, CISO, Chief of Staff, General Counsel) plus 17 /cs:* slash commands for forcing-question office hours, multi-role boardroom deliberation, strategic sprint pipeline, and meta routing. Wraps the 29 c-level skills (including the new general-counsel-advisor with contract risk scanner + term sheet analyzer) with cognitive gearing and artifact handoffs.",
-  "version": "1.1.0",
+  "description": "Founder-mode executive team plugin: 10 cs-* C-suite agents (CFO, CMO, CRO, CPO, COO, CHRO, CISO, Chief of Staff, General Counsel, Chief Data Officer) plus 18 /cs:* slash commands for forcing-question office hours (incl. /cs:cdo-review), multi-role boardroom deliberation, strategic sprint pipeline, and meta routing. Wraps the 30 c-level skills (including general-counsel-advisor with contract risk scanner + term sheet analyzer, and chief-data-officer-advisor with AI training data audit + data product strategy picker + data asset valuator) with cognitive gearing and artifact handoffs.",
+  "version": "1.2.0",
   "author": {
     "name": "Alireza Rezvani",
     "url": "https://alirezarezvani.com"

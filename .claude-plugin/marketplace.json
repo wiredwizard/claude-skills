@@ -39,8 +39,8 @@
     {
       "name": "c-level-skills",
       "source": "./c-level-advisor",
-      "description": "29 C-level advisory skills + c-level-agents plugin layer: virtual board of directors (CEO, CTO, COO, CPO, CMO, CFO, CRO, CISO, CHRO) plus General Counsel (contract risk scanner, term sheet analyzer, IP + regulatory playbook), executive mentor, founder coach, orchestration (Chief of Staff, board meetings, decision logger), strategic capabilities (board deck builder, scenario war room, competitive intel, M&A playbook), culture frameworks, and 9 cs-* persona agents + 17 /cs:* slash commands (founder-mode router, office-hours intake, multi-role boardroom, strategic sprint pipeline, cross-model consensus, cooldown freeze).",
-      "version": "2.5.1",
+      "description": "30 C-level advisory skills + c-level-agents plugin layer: virtual board of directors (CEO, CTO, COO, CPO, CMO, CFO, CRO, CISO, CHRO) plus General Counsel (contract risk scanner, term sheet analyzer, IP + regulatory playbook) and Chief Data Officer (AI training data audit, data product strategy picker, data asset valuator), executive mentor, founder coach, orchestration (Chief of Staff, board meetings, decision logger), strategic capabilities (board deck builder, scenario war room, competitive intel, M&A playbook), culture frameworks, and 10 cs-* persona agents + 18 /cs:* slash commands (founder-mode router, office-hours intake, multi-role boardroom, strategic sprint pipeline, cross-model consensus, cooldown freeze).",
+      "version": "2.5.2",
       "author": {
         "name": "Alireza Rezvani"
       },
@@ -61,8 +61,8 @@
     {
       "name": "c-level-agents",
       "source": "./c-level-advisor/c-level-agents",
-      "description": "Founder-mode executive team plugin: 9 cs-* C-suite agents (CFO, CMO, CRO, CPO, COO, CHRO, CISO, Chief of Staff, General Counsel) with distinct cognitive voices, plus 17 /cs:* slash commands — forcing-question office hours (CFO/CMO/CPO/CRO/CTO/CISO/GC reviews), strategic sprint pipeline (brief → boardroom → decide → execute → post-mortem), and meta routing (/cs:founder-mode auto-router, /cs:onboard, /cs:cross-eval multi-model consensus, /cs:freeze cooldown lock). Wraps the 29 c-level skills (including the new general-counsel-advisor with contract risk scanner + term sheet analyzer) with cognitive gearing, persona voice, and artifact-driven handoffs. The business-domain answer to YC Garry Tan's gstack.",
-      "version": "1.1.0",
+      "description": "Founder-mode executive team plugin: 10 cs-* C-suite agents (CFO, CMO, CRO, CPO, COO, CHRO, CISO, Chief of Staff, General Counsel, Chief Data Officer) with distinct cognitive voices, plus 18 /cs:* slash commands — forcing-question office hours (CFO/CMO/CPO/CRO/CTO/CISO/GC/CDO reviews), strategic sprint pipeline (brief → boardroom → decide → execute → post-mortem), and meta routing (/cs:founder-mode auto-router, /cs:onboard, /cs:cross-eval multi-model consensus, /cs:freeze cooldown lock). Wraps the 30 c-level skills (including general-counsel-advisor and chief-data-officer-advisor with AI training data audit + data product strategy picker + data asset valuator) with cognitive gearing, persona voice, and artifact-driven handoffs. The business-domain answer to YC Garry Tan's gstack.",
+      "version": "1.2.0",
       "author": {
         "name": "Alireza Rezvani"
       },
@@ -81,6 +81,11 @@
         "contract-review",
         "term-sheet",
         "ip-strategy",
+        "chief-data-officer",
+        "cdo",
+        "ai-training-data",
+        "data-product-strategy",
+        "data-as-asset",
         "decision-logging",
         "cross-model"
       ],

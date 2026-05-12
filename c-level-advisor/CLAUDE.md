@@ -21,7 +21,7 @@ A complete virtual board of directors: 28 skills covering 10 executive roles, or
 
 ## Skills Overview
 
-### C-Suite Roles (11)
+### C-Suite Roles (12)
 
 | Role | Folder | Reasoning Technique | Scripts |
 |------|--------|-------------------|---------|
@@ -34,7 +34,8 @@ A complete virtual board of directors: 28 skills covering 10 executive roles, or
 | **CRO** | `cro-advisor/` | Chain of Thought | revenue_forecast_model, churn_analyzer |
 | **CISO** | `ciso-advisor/` | Risk-Based | risk_quantifier, compliance_tracker |
 | **CHRO** | `chro-advisor/` | Empathy + Data | hiring_plan_modeler, comp_benchmarker |
-| **General Counsel** ⭐ NEW v2.5.1 | `general-counsel-advisor/` | Risk-Based | contract_risk_scanner, term_sheet_analyzer |
+| **General Counsel** | `general-counsel-advisor/` | Risk-Based | contract_risk_scanner, term_sheet_analyzer |
+| **Chief Data Officer** ⭐ NEW v2.5.2 | `chief-data-officer-advisor/` | Decision-Driven | ai_training_data_audit, data_product_strategy_picker, data_asset_valuator |
 | **Executive Mentor** | `executive-mentor/` | Adversarial | decision_matrix_scorer, stakeholder_mapper |
 
 ### Orchestration (6)
@@ -74,7 +75,7 @@ A complete virtual board of directors: 28 skills covering 10 executive roles, or
 
 A separate plugin at `c-level-agents/` that wraps the 10 C-roles with persona agents and slash commands. Founder-mode entry layer.
 
-### 9 cs-* Agents (in `c-level-agents/agents/`)
+### 10 cs-* Agents (in `c-level-agents/agents/`)
 
 | Agent | Voice | Wraps Skill |
 |---|---|---|
@@ -86,7 +87,8 @@ A separate plugin at `c-level-agents/` that wraps the 10 C-roles with persona ag
 | cs-chro-advisor | People-systems | chro-advisor |
 | cs-ciso-advisor | Risk-paranoid | ciso-advisor |
 | cs-chief-of-staff | Router & synthesist | chief-of-staff |
-| cs-general-counsel-advisor ⭐ NEW v2.5.1 | Risk-paranoid (legal) | general-counsel-advisor |
+| cs-general-counsel-advisor | Risk-paranoid (legal) | general-counsel-advisor |
+| cs-cdo-advisor ⭐ NEW v2.5.2 | Decision-driven (data) | chief-data-officer-advisor |
 
 Existing `cs-ceo-advisor` and `cs-cto-advisor` live in `/agents/c-level/` and integrate with the same protocol.
 
@@ -147,7 +149,7 @@ python decision-logger/scripts/decision_tracker.py
 ---
 
 **Last Updated:** 2026-05-12
-**Skills Deployed:** 29 skills (11 roles incl. General Counsel + 5 mentor commands + 6 orchestration + 6 cross-cutting + 6 culture) + 17 /cs:* sub-skills in c-level-agents plugin
-**Agents:** 11 cs-* (cs-ceo, cs-cto in /agents/c-level/; 9 in c-level-agents/agents/ including new cs-general-counsel-advisor)
-**Python Tools:** 27 (stdlib-only) — +2 with general-counsel-advisor (contract_risk_scanner, term_sheet_analyzer)
-**Reference Docs:** 57 (55 in skills + 2 in c-level-agents/references)
+**Skills Deployed:** 30 skills (12 roles incl. General Counsel and Chief Data Officer + 5 mentor commands + 6 orchestration + 6 cross-cutting + 6 culture) + 18 /cs:* sub-skills in c-level-agents plugin
+**Agents:** 12 cs-* (cs-ceo, cs-cto in /agents/c-level/; 10 in c-level-agents/agents/ including new cs-cdo-advisor)
+**Python Tools:** 30 (stdlib-only) — +3 with chief-data-officer-advisor (ai_training_data_audit, data_product_strategy_picker, data_asset_valuator)
+**Reference Docs:** 61 (59 in skills + 2 in c-level-agents/references)

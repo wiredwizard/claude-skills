@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a **comprehensive skills library** for Claude AI and Claude Code - reusable, production-ready skill packages that bundle domain expertise, best practices, analysis tools, and strategic frameworks. The repository provides modular skills that teams can download and use directly in their workflows.
 
-**Current Scope:** 264 production-ready skills across 9 domains with 361 Python automation tools, 490 reference guides, 36 agents (29 `cs-*` + 7 personas), and 50 slash commands.
+**Current Scope:** 265 production-ready skills across 9 domains with 364 Python automation tools, 494 reference guides, 37 agents (30 `cs-*` + 7 personas), and 51 slash commands.
 
 **Key Distinction**: This is NOT a traditional application. It's a library of skill packages meant to be extracted and deployed by users into their own Claude workflows.
 
@@ -124,9 +124,15 @@ See [standards/git/git-workflow-standards.md](standards/git/git-workflow-standar
 
 ## Current Version
 
-**Version:** v2.5.1 (latest)
+**Version:** v2.5.2 (latest)
 
-**v2.5.1 Highlights — general-counsel-advisor: the gstack-can't-touch lane:**
+**v2.5.2 Highlights — chief-data-officer-advisor: data strategy without surveys:**
+- **chief-data-officer-advisor** skill (new, `./c-level-advisor/skills/chief-data-officer-advisor/`) — opinionated, decision-driven CDO skill covering 4 specific decisions (no generic governance survey). 3 stdlib Python tools with deterministic logic: `ai_training_data_audit.py` (origin × class × use-case matrix → GO/MITIGATE/NO-GO with GDPR Art. 6 and EU AI Act citations), `data_product_strategy_picker.py` (warehouse/lakehouse/mesh recommendation + 6-layer build-vs-buy + 12-month sequencing), `data_asset_valuator.py` (strategic value 0-10, moat strength, M&A multiplier with carve-out penalties, 3 ranked productization paths). 4 references answering one decision each: training rights (decision tree + state patchwork), data product strategy (kill criteria per architecture), customer-data-as-asset (valuation + M&A diligence prep), data team org evolution (stage-to-role map). Karpathy-aligned: explicit anti-patterns, decision-driven (not topic-driven), surgical (does not duplicate engineering data skills).
+- **cs-cdo-advisor** agent (new) — decision-driven realist orchestrating the skill via `/cs:cdo-review`. Distinct voice: "What decision does this data drive?" Refuses to recommend tooling before naming the consumer.
+- **/cs:cdo-review** (new slash command) — 6-question forcing interrogation: decision being made, consent provenance, internal consumers, M&A diligence impact, model-without-this-source viability, role-that-unblocks-this.
+- **Built with Karpathy-coder discipline:** explicit assumptions surfaced upfront, verifiable success criteria locked before code, surgical scope (no edits to unrelated files), deterministic tool logic (not pattern-match prose), kill criteria documented in every recommendation.
+
+**Version:** v2.5.1
 - **general-counsel-advisor** skill (new, `./c-level-advisor/skills/general-counsel-advisor/`) — full standalone C-role skill backing the existing `/cs:gc-review` command. 2 stdlib Python tools: `contract_risk_scanner.py` (scans contract text for 12 founder-killer patterns: auto-renew traps, uncapped indemnity, vague IP, aggressive non-compete, missing DPA, MFN pricing, perpetual license-back, etc.) and `term_sheet_analyzer.py` (scores term sheets 0-100 across 12 dimensions: liquidation preference, anti-dilution, option pool, board composition, vesting, pro-rata, drag-along, protective provisions, info rights, dividends, valuation/dilution, holistic). 3 references: contracts playbook (7 startup contract types), IP + regulatory landscape (patents, trademark, OSS compliance, HIPAA/GDPR/FDA/fintech triggers, SOC 2 → ISO sequencing), term sheet decoder (full glossary + founder-friendly defaults + negotiation strategy).
 - **cs-general-counsel-advisor** agent (new) — risk-paranoid persona orchestrating the skill via `/cs:gc-review`. Distinct voice: "Before we sign, three things need to be settled in writing." Always escalates to outside counsel — never substitutes for it.
 - **First plugin to outclass gstack on a domain it has zero coverage in.** Software-shipping personas don't include General Counsel; legal exposure is where startups most often discover problems after they're expensive to fix.

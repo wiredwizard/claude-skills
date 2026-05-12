@@ -1,7 +1,7 @@
 {
   "name": "c-level-skills",
-  "description": "29 C-level advisory skills + c-level-agents plugin layer (9 cs-* persona agents + 17 /cs:* slash commands). Complete virtual board of directors with CEO, CTO, COO, CPO, CMO, CFO, CRO, CISO, CHRO advisors plus General Counsel (contract risk scanner, term sheet analyzer, IP + regulatory playbook), executive mentor, founder coach, Chief of Staff router, board meetings, decision logger, board deck builder, scenario war room, competitive intel, org health diagnostic, M&A playbook, international expansion, culture architect, change management, strategic alignment, and the founder-mode plugin (office-hours, boardroom, brief/decide/execute/post-mortem pipeline, cross-model consensus, decision freeze).",
-  "version": "2.5.1",
+  "description": "30 C-level advisory skills + c-level-agents plugin layer (10 cs-* persona agents + 18 /cs:* slash commands). Complete virtual board of directors with CEO, CTO, COO, CPO, CMO, CFO, CRO, CISO, CHRO advisors plus General Counsel (contract risk scanner, term sheet analyzer, IP + regulatory playbook) and Chief Data Officer (AI training data audit, data product strategy picker, data asset valuator), executive mentor, founder coach, Chief of Staff router, board meetings, decision logger, board deck builder, scenario war room, competitive intel, org health diagnostic, M&A playbook, international expansion, culture architect, change management, strategic alignment, and the founder-mode plugin (office-hours, boardroom, brief/decide/execute/post-mortem pipeline, cross-model consensus, decision freeze).",
+  "version": "2.5.2",
   "author": {
     "name": "Alireza Rezvani",
     "url": "https://alirezarezvani.com"
