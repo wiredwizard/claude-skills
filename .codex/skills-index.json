@@ -3,7 +3,7 @@
   "name": "claude-code-skills",
   "description": "Production-ready skill packages for AI agents - Marketing, Engineering, Product, C-Level, PM, and RA/QM",
   "repository": "https://github.com/alirezarezvani/claude-skills",
-  "total_skills": 192,
+  "total_skills": 193,
   "skills": [
     {
       "name": "business-growth-skills",
@@ -226,6 +226,12 @@
       "source": "../../c-level-advisor/skills/strategic-alignment",
       "category": "c-level",
       "description": "Cascades strategy from boardroom to individual contributor. Detects and fixes misalignment between company goals and team execution. Covers strategy articulation, cascade mapping, orphan goal detection, silo identification, communication gap analysis, and realignment protocols. Use when teams are pulling in different directions, OKRs don't connect, departments optimize locally at company expense, or when user mentions alignment, strategy cascade, silo, conflicting OKRs, or strategy communication."
+    },
+    {
+      "name": "vpe-advisor",
+      "source": "../../c-level-advisor/skills/vpe-advisor",
+      "category": "c-level",
+      "description": "VP of Engineering advisory for startups: delivery throughput (DORA 4 metrics + bottleneck identification), engineering hiring funnel (sourcing \u2192 screen \u2192 onsite \u2192 offer conversion + time-to-fill + pipeline gap), engineering team structure (squad/tribe/chapter design + tech-lead manager-trigger thresholds), and production discipline (on-call, deployment cadence, postmortem culture). Use when sprint velocity is dropping, eng hiring is broken, team structure is unclear, or deciding when to add a tech-lead manager. NOT a CTO skill (which owns architecture) \u2014 VPE owns delivery operations and how the team ships."
     },
     {
       "name": "adversarial-reviewer",
@@ -1165,7 +1171,7 @@
       "description": "Customer success, sales engineering, and revenue operations skills"
     },
     "c-level": {
-      "count": 32,
+      "count": 33,
       "source": "../../c-level-advisor",
       "description": "Executive leadership and advisory skills"
     },
