@@ -1,9 +1,20 @@
 ---
-name: aeo
-description: "Answer Engine Optimization (AEO) skill — optimize content to be cited by AI language models (ChatGPT, Perplexity, Claude, Gemini, Mistral) as authoritative sources. Distinct from SEO — AEO optimizes for citation in LLM-generated responses, not search rankings. Use when planning content for AI-first search audiences, auditing existing content for E-E-A-T signals, tracking which pages get cited by which LLMs, or building a citation-friendly content strategy. Triggers — 'AEO audit', 'optimize for ChatGPT', 'get cited by Perplexity', 'LLM citation strategy', 'answer engine optimization', 'content for AI search', 'E-E-A-T audit'. Output is a markdown audit report (default) or JSON for pipeline integration. Stdlib-only Python tools."
+title: "Answer Engine Optimization (AEO) — Agent Skill for Marketing"
+description: "Answer Engine Optimization (AEO) skill — optimize content to be cited by AI language models (ChatGPT, Perplexity, Claude, Gemini, Mistral) as."
 ---
 
 # Answer Engine Optimization (AEO)
+
+<div class="page-meta" markdown>
+<span class="meta-badge">:material-bullhorn-outline: Marketing</span>
+<span class="meta-badge">:material-identifier: `aeo`</span>
+<span class="meta-badge">:material-github: <a href="https://github.com/alirezarezvani/claude-skills/tree/main/marketing-skill/skills/aeo/SKILL.md">Source</a></span>
+</div>
+
+<div class="install-banner" markdown>
+<span class="install-label">Install:</span> <code>claude /plugin install marketing-skills</code>
+</div>
+
 
 **Get your content cited by ChatGPT, Perplexity, Claude, Gemini, and Mistral as the authoritative source.**
 
