@@ -4,7 +4,9 @@
 
 The most comprehensive open-source library of Claude Code skills and agent plugins — also works with OpenAI Codex, Gemini CLI, Cursor, and 7 more coding agents. Reusable expertise packages covering engineering, DevOps, marketing, compliance, C-level advisory (incl. founder-mode CFO/CMO/CRO/CPO/COO/CHRO/CISO/GC/CDO/CAIO/CCO/VPE personas + 21 /cs:* slash commands), productivity (capture/email/reflect), and a complete research stack (litreview/grants/dossier/patent/syllabus/pulse/notebooklm + hybrid router).
 
-**Works with:** Claude Code · OpenAI Codex · Gemini CLI · OpenClaw · Hermes Agent · Cursor · Aider · Windsurf · Kilo Code · OpenCode · Augment · Antigravity
+**Works with:** Claude Code · OpenAI Codex · Gemini CLI · OpenClaw · Hermes Agent[^hermes] · Cursor · Aider · Windsurf · Kilo Code · OpenCode · Augment · Antigravity
+
+[^hermes]: Hermes Agent is **BYO-sync tier**: the repo ships a pre-generated `.hermes/skills/claude-skills/` tree (303 skills across 12 domains as of v2.7.2), but you run `python scripts/sync-hermes-skills.py` once locally to install into `~/.hermes/skills/`. Uses the same agentskills.io SKILL.md standard — no format conversion.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Skills](https://img.shields.io/badge/Skills-311-brightgreen?style=for-the-badge)](#skills-overview)

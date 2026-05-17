@@ -5,7 +5,7 @@ description: "Install Claude Code skills and agent plugins in Hermes Agent, Curs
 
 # Multi-Tool Integrations
 
-All 246 skills in this repository work natively with **8 AI coding tools** beyond Claude Code, Codex, Gemini CLI, and OpenClaw. Hermes Agent uses the same agentskills.io SKILL.md standard — no conversion needed. For the other 7 tools, a conversion script adapts the format each tool expects while preserving skill instructions, workflows, and supporting files.
+All 311 skills in this repository work natively with **8 AI coding tools** beyond Claude Code, Codex, Gemini CLI, and OpenClaw. Hermes Agent uses the same agentskills.io SKILL.md standard — no conversion needed. For the other 7 tools, a conversion script adapts the format each tool expects while preserving skill instructions, workflows, and supporting files.
 
 <div class="grid cards" markdown>
 
@@ -537,6 +537,9 @@ find ~/.gemini/antigravity/skills -name "SKILL.md" | wc -l
 
 [Hermes Agent](https://github.com/NousResearch/hermes-agent) by Nous Research is a self-improving AI agent with a built-in learning loop. It uses the [agentskills.io](https://agentskills.io) standard — **the same SKILL.md format our repo uses** — so no conversion is needed.
 
+!!! tip "Tier: BYO-sync (pre-generated tree available since v2.7.2)"
+    Starting in v2.7.2, the repo ships a pre-generated `.hermes/skills/claude-skills/` tree with **303 symlinks** across **12 domains** (including the v2.7.0 productivity/marketing/research domains). You still need to copy/symlink that tree into `~/.hermes/skills/` on your machine — that's the BYO-sync step. The `sync-hermes-skills.py` script handles this in one command.
+
 ### Why Hermes is different
 
 Unlike other tools that need format conversion, Hermes reads `SKILL.md` files natively with the exact same YAML frontmatter (`name`, `description`, `version`, `license`), the same directory layout (`references/`, `templates/`, `assets/`), and the same `AGENTS.md` project context. Our skills are plug-and-play.
@@ -551,7 +554,7 @@ Unlike other tools that need format conversion, Hermes reads `SKILL.md` files na
     python scripts/sync-hermes-skills.py --verbose
     ```
 
-    This symlinks all 198+ skills into `~/.hermes/skills/claude-skills/` where Hermes discovers them automatically.
+    This symlinks all 303 skills into `~/.hermes/skills/claude-skills/` where Hermes discovers them automatically. Covers all 12 domains including the v2.7.0 additions (productivity, marketing, research).
 
 === "Single domain"
 
