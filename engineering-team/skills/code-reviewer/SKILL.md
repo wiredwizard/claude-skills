@@ -138,7 +138,31 @@ python scripts/review_report_generator.py . \
 
 ## Adding a New Language
 
+**Reviewer guidance (required):**
+
 1. Create `languages/<name>.md` using any existing language file as a template — it must have sections: PR Analyzer Signals, Code Quality Checks, Security, Async, Resource Management, Exception Handling, Performance, Idioms.
 2. Add the extension row to the dispatch table above.
-3. Add the `--language` value to the Code Quality Checker comment.
-4. No other files need to change.
+
+That is all the agent-driven review needs.
+
+**Deterministic analyzer support (optional, recommended):** the bundled scripts
+only flag a language they explicitly know. To make `code_quality_checker.py`
+score the new language:
+
+3. Add the extensions to `LANGUAGE_EXTENSIONS` in `scripts/code_quality_checker.py` (this also adds the `--language` choice).
+4. Add `function` / `class` / `method` regex entries for the language in the same file; otherwise it falls back to the Python patterns.
+5. Optionally add a `check_<name>_specific_smells(...)` detector (see the C# and Java ones) and call it from `analyze_file`.
+6. Add `assets/sample_<name>_smells.<ext>` + `_clean` fixtures and commit the expected `--json` output under `expected_outputs/` as a regression guard.
+
+---
+
+## Regression Fixtures
+
+Labelled fixtures live in `assets/` with their committed `--json` output in
+`expected_outputs/` (C# and Java). Drift from the committed JSON signals a
+behaviour change in the analyzer:
+
+```bash
+python scripts/code_quality_checker.py assets/sample_java_smells.java --json \
+  | diff - expected_outputs/sample_java_smells_quality.json
+```
