@@ -21,7 +21,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover
+    _cfg = None
 
 # Profiles tune the divergence tolerance and a sanity note.
 PROFILES = {
@@ -126,15 +133,20 @@ def _render_human(r: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Compute TAM/SAM/SOM by top-down AND bottoms-up (never a single number).")
     p.add_argument("--input", help="Path to JSON with top_down{} and bottoms_up{}")
-    p.add_argument("--method", choices=["top-down", "bottoms-up", "both"], default="both")
-    p.add_argument("--profile", default="b2b-saas", choices=list(PROFILES))
+    p.add_argument("--method", choices=["top-down", "bottoms-up", "both"], default=None,
+                   help="overrides onboarding sizing_method")
+    p.add_argument("--profile", default=None, choices=list(PROFILES),
+                   help="overrides onboarding default_profile")
     p.add_argument("--output", choices=["human", "json"], default="human")
     p.add_argument("--sample", action="store_true", help="use the embedded sample")
     args = p.parse_args(argv)
 
+    conf = _cfg.load_config() if _cfg else {}
+    method = args.method or conf.get("sizing_method", "both")
+    profile = args.profile or conf.get("default_profile", "b2b-saas")
     data = SAMPLE if (args.sample or not args.input) else json.load(open(args.input))
     try:
-        result = size_market(data, args.method, args.profile)
+        result = size_market(data, method, profile)
     except ValueError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2

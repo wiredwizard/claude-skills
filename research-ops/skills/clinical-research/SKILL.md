@@ -51,6 +51,33 @@ Invoke this skill when:
 
 All three: stdlib-only, `--help`, `--sample`, `--output {human,json}`.
 
+## Onboarding & customization
+
+Run the onboarding questionnaire **once before you start** — it captures your defaults and named owners so every tool in this skill is pre-configured. Customization is the point: the answers actually change tool behavior.
+
+```bash
+python3 scripts/onboard.py            # interactive (also: --defaults, --set key=value, --reset)
+python3 scripts/onboard.py --show     # see the questions + current effective config
+```
+
+Answers are saved to `~/.config/research-ops/clinical-research.json` (global) or `./.research-ops/clinical-research.json` (`--scope project`) and are read automatically by `config_loader.py`. They set the default development-area **profile**, default **alpha / power / dropout**, and the named **biostatistician / medical monitor / regulatory owner** printed on outputs. CLI flags always override saved config; `RESEARCH_OPS_NO_CONFIG=1` ignores it entirely.
+
+**The seven questions:** development area · alpha · power · dropout · biostatistician · medical monitor · regulatory owner.
+
+## Optimize with autoresearch (opt-in)
+
+This skill ships an **isolated, opt-in** bridge to `engineering/autoresearch-agent`. Only when you ask to "optimize" / "run a loop" does an autoresearch experiment iteratively improve a study plan against this skill's own feasibility score. `scripts/ar_evaluator.py` is the ground-truth evaluator; it prints `feasibility_composite: <0-100>` (higher is better).
+
+```bash
+/ar:setup --domain custom --name trial-feasibility \
+  --target study.json \
+  --eval "python3 ar_evaluator.py --target study.json" \
+  --metric feasibility_composite --direction higher
+/ar:loop custom/trial-feasibility
+```
+
+Isolated: no hard dependency — autoresearch runs only on demand, and the loop edits `study.json`, never the evaluator (locked ground truth).
+
 ## References
 
 - `references/study_design_canon.md` — ICH E8(R1) general considerations; ICH E9 + E9(R1) estimand addendum; CONSORT 2010; SPIRIT 2013; FDA Multiple Endpoints guidance (2022).

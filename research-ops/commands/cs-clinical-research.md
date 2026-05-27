@@ -28,6 +28,11 @@ Run the `clinical-research` skill on this input:
 
 **Every output is an ESTIMATE, not a protocol.** A biostatistician, medical monitor, and regulatory owner sign the final design.
 
+## First run + optimization
+
+- **Onboard first:** `python3 scripts/onboard.py` (area, alpha, power, dropout, named owners) — saved config pre-configures every tool. `--show` lists the questions.
+- **Optimize (opt-in):** only if the user asks to optimize/run a loop, hand off to autoresearch via `scripts/ar_evaluator.py` (`feasibility_composite`, higher is better).
+
 ## Distinct from
 
 - `ra-qm-team` — that's the regulatory **submission**. This designs the **study**.

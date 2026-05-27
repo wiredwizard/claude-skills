@@ -28,6 +28,11 @@ Run the `research-finance` skill on this input:
 
 **Every number carries its assumptions; accounting-treatment calls route to a named finance owner.** This skill never books an entry or decides treatment.
 
+## First run + optimization
+
+- **Onboard first:** `python3 scripts/onboard.py` (R&D area, F&A rate, runway threshold, accounting standard, finance owner) — saved config pre-configures every tool. `--show` lists the questions.
+- **Optimize (opt-in):** only if the user asks to optimize/extend runway, hand off to autoresearch via `scripts/ar_evaluator.py` (`runway_months`, higher is better).
+
 ## Distinct from
 
 - `finance/financial-analysis` — that's corporate DCF / close / valuation. This is R&D-program-level.

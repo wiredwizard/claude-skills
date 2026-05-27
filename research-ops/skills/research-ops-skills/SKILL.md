@@ -94,6 +94,21 @@ Grill the user on lane-defining decisions before invoking the sub-skill. One per
 
 Never run a sub-skill until the lane-defining decision is locked.
 
+## Onboarding-first (per sub-skill)
+
+Before invoking a sub-skill for the first time in a workspace, point the user at that skill's onboarding questionnaire so the tools run pre-configured to their context:
+
+```bash
+python3 skills/<sub-skill>/scripts/onboard.py          # interactive Q&A
+python3 skills/<sub-skill>/scripts/onboard.py --show    # questions + current config
+```
+
+Each sub-skill has its **own** question set (clinical: area/alpha/power/dropout/owners · finance: area/F&A/runway/standard/owner · market: profile/confidence/MoE/method · product: profile/insight-threshold/method/stakes). Answers persist to `~/.config/research-ops/<sub-skill>.json` (or `./.research-ops/<sub-skill>.json` with `--scope project`) and are consumed automatically by every tool in that skill. Customization is mandatory discipline here, not decoration — surface the onboarding step when a user starts a fresh research workstream.
+
+## Autoresearch handoff (isolated, opt-in)
+
+Each sub-skill ships its own `scripts/ar_evaluator.py` — an **isolated** bridge to `engineering/autoresearch-agent`. Invoke autoresearch **only when the user explicitly asks** to "optimize", "improve", or "run a loop". The handoff is per-skill (no shared coupling): the loop edits the skill's input file and the evaluator scores it (clinical → `feasibility_composite` higher; finance → `runway_months` higher; market → `tam_divergence` lower; product → `validated_insights` higher). Never auto-start a loop; never let the loop edit the evaluator.
+
 ## Assumptions
 
 1. User has research authority OR is preparing analysis for someone who does.

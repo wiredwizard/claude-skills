@@ -21,7 +21,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover
+    _cfg = None
 
 METHODS = ["usability", "thematic", "evaluative-coverage"]
 
@@ -98,7 +105,7 @@ def _render_human(r: dict) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Method-based product-research sample guidance with confidence.")
-    p.add_argument("--method", choices=METHODS, default="usability")
+    p.add_argument("--method", choices=METHODS, default=None, help="overrides onboarding default_method")
     p.add_argument("--segments", type=int, default=1)
     p.add_argument("--detection-rate", type=float, default=0.31, help="per-problem detection rate (usability)")
     p.add_argument("--target-coverage", type=float, default=0.85, help="target problem coverage (usability)")
@@ -108,8 +115,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--sample", action="store_true", help="use the embedded sample")
     args = p.parse_args(argv)
 
+    conf = _cfg.load_config() if _cfg else {}
+    method = args.method or conf.get("default_method", "usability")
+    stakes_high = args.stakes_high or bool(conf.get("stakes_high", False))
+
     if args.sample:
-        method, segments = "usability", 2
         try:
             result = plan("usability", 2, 0.31, 0.85, False, 8)
         except ValueError as e:
@@ -117,8 +127,8 @@ def main(argv: list[str] | None = None) -> int:
             return 2
     else:
         try:
-            result = plan(args.method, args.segments, args.detection_rate,
-                          args.target_coverage, args.stakes_high, args.n_per_segment)
+            result = plan(method, args.segments, args.detection_rate,
+                          args.target_coverage, stakes_high, args.n_per_segment)
         except ValueError as e:
             print(f"error: {e}", file=sys.stderr)
             return 2

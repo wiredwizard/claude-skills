@@ -19,7 +19,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover
+    _cfg = None
 
 SAMPLE = {
     "program": "Next-Gen Assay Platform",
@@ -120,14 +127,17 @@ def _render_human(r: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Compute R&D program burn, runway, and milestone alignment.")
     p.add_argument("--input", help="Path to JSON ledger")
-    p.add_argument("--threshold-months", type=float, default=6.0, help="runway alert threshold (months)")
+    p.add_argument("--threshold-months", type=float, default=None, help="runway alert threshold (months)")
     p.add_argument("--output", choices=["human", "json"], default="human")
     p.add_argument("--sample", action="store_true", help="use the embedded sample")
     args = p.parse_args(argv)
 
+    conf = _cfg.load_config() if _cfg else {}
+    threshold = args.threshold_months if args.threshold_months is not None \
+        else float(conf.get("runway_threshold_months", 6.0))
     data = SAMPLE if (args.sample or not args.input) else json.load(open(args.input))
     try:
-        result = analyze(data, args.threshold_months)
+        result = analyze(data, threshold)
     except ValueError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2

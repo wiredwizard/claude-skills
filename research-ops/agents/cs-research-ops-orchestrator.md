@@ -68,6 +68,11 @@ Hard outputs:
 - ❌ Promoting a single-participant observation to an insight
 - ❌ Running all 4 sub-skills "to be thorough" — pick one, digest, chain
 
+## Onboarding-first + autoresearch handoff
+
+- **Onboarding-first.** When a user starts a fresh research workstream, point them at the relevant sub-skill's `scripts/onboard.py` before running its tools. Each skill has its own question set; answers persist to `~/.config/research-ops/<skill>.json` (or `./.research-ops/<skill>.json`) and pre-configure every tool. Treat customization as mandatory discipline — flag it when it's been skipped.
+- **Autoresearch is opt-in and isolated.** Each sub-skill ships its own `scripts/ar_evaluator.py` bridging to `engineering/autoresearch-agent`. Invoke an autoresearch loop ONLY when the user explicitly asks to optimize / improve / run a loop. The connection is per-skill (no shared coupling): the loop edits the skill's input file; the evaluator is locked ground truth (never edited). Metrics: clinical `feasibility_composite` (↑), finance `runway_months` (↑), market `tam_divergence` (↓), product `validated_insights` (↑).
+
 ## When to escalate
 
 - Regulatory submission (510(k)/PMA/MDR/QMS) → `ra-qm-team`
@@ -85,3 +90,5 @@ Hard outputs:
 - `/cs:research-finance` — direct invocation of research-finance
 - `/cs:market-research` — direct invocation of market-research
 - `/cs:product-research` — direct invocation of product-research
+
+Per-skill onboarding: `python3 skills/<skill>/scripts/onboard.py`. Per-skill autoresearch evaluator: `python3 skills/<skill>/scripts/ar_evaluator.py` (used by `/ar:setup` only on explicit opt-in).

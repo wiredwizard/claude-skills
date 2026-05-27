@@ -27,10 +27,12 @@ It is **not regulatory submission** (`ra-qm-team`), **not corporate financial cl
 5. **Stdlib-only Python.** Deterministic logic, no LLM calls in scripts.
 6. **Industry tuning** via `--profile` on every scoring tool.
 7. **Matt Pocock grill discipline** — `/cs:grill-research-ops` interrogates the plan against the research canon (ICH E9, IAS 38, Cochran, Nielsen, Kotler) before any sub-skill runs.
+8. **Onboarding-first + customization-in-use.** Each sub-skill ships `scripts/onboard.py` (its own question set) + `scripts/config_loader.py`. Answers persist to `~/.config/research-ops/<skill>.json` (global) or `./.research-ops/<skill>.json` (project) and are consumed by every tool (CLI flags override; `RESEARCH_OPS_NO_CONFIG=1` bypasses). Customization must change behavior, not sit as decoration.
+9. **Autoresearch is opt-in + isolated.** Each sub-skill ships `scripts/ar_evaluator.py` — a per-skill, locked ground-truth bridge to `engineering/autoresearch-agent`. A loop is invoked ONLY on explicit user request and only edits the skill's input file, never the evaluator. No cross-skill coupling.
 
 ## Build pattern
 
-Path-B contract per skill: SKILL.md + 3 stdlib scripts + 3 references (each citing 5-7 sources) + 1 asset template. SKILL.md includes a "Forcing-question library" section that grills the user with cited canon one question at a time, each with a recommended answer.
+Path-B contract per skill: SKILL.md + 3 stdlib scoring scripts + 3 references (each citing 5-7 sources) + 1 asset template, **plus** 3 integration scripts — `onboard.py` (questionnaire), `config_loader.py` (customization loader, project→global→defaults precedence), and `ar_evaluator.py` (isolated autoresearch bridge). SKILL.md includes a "Forcing-question library" section (cited-canon grilling, one question at a time) and the "Onboarding & customization" + "Optimize with autoresearch (opt-in)" sections.
 
 ## Agent + command pattern
 

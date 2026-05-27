@@ -51,6 +51,33 @@ Invoke this skill when:
 
 All three: stdlib-only, `--help`, `--sample`, `--output {human,json}`.
 
+## Onboarding & customization
+
+Run the onboarding questionnaire **once before you start** — it captures your defaults so every tool in this skill is pre-configured. Customization is the point: the answers actually change tool behavior (e.g. the insight source-threshold).
+
+```bash
+python3 scripts/onboard.py            # interactive (also: --defaults, --set key=value, --reset)
+python3 scripts/onboard.py --show     # see the questions + current effective config
+```
+
+Answers are saved to `~/.config/research-ops/product-research.json` (global) or `./.research-ops/product-research.json` (`--scope project`) and are read automatically by `config_loader.py`. They set the default product **profile**, the **insight source-threshold** (how many independent participants make a finding an insight, not an anecdote), the default **saturation method**, and the **high-stakes** flag. CLI flags always override saved config; `RESEARCH_OPS_NO_CONFIG=1` ignores it.
+
+**The four questions:** product profile · insight source-threshold · saturation method · high-stakes flag.
+
+## Optimize with autoresearch (opt-in)
+
+This skill ships an **isolated, opt-in** bridge to `engineering/autoresearch-agent`. Only when you ask to "optimize the synthesis" / "run a loop" does an autoresearch experiment iteratively refine the coding/clustering of a fixed evidence set so more cross-participant patterns surface. `scripts/ar_evaluator.py` is the ground-truth evaluator; it prints `validated_insights: <int>` (higher is better). It optimizes the **coding**, never fabricates evidence.
+
+```bash
+/ar:setup --domain custom --name insight-synthesis \
+  --target observations.json \
+  --eval "python3 ar_evaluator.py --target observations.json" \
+  --metric validated_insights --direction higher
+/ar:loop custom/insight-synthesis
+```
+
+Isolated: no hard dependency — autoresearch runs only on demand, and the loop edits `observations.json`, never the evaluator.
+
 ## References
 
 - `references/research_methods_canon.md` — Portigal *Interviewing Users*; Christensen/Ulwick JTBD; Rohrer's UX-research methods landscape (NN/g); Sauro & Lewis *Quantifying the User Experience*; Goodman/Kuniavsky.

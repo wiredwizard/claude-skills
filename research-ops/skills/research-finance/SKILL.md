@@ -51,6 +51,33 @@ Invoke this skill when:
 
 All three: stdlib-only, `--help`, `--sample`, `--output {human,json}`.
 
+## Onboarding & customization
+
+Run the onboarding questionnaire **once before you start** — it captures your defaults so every tool in this skill is pre-configured. Customization is the point: the answers actually change tool behavior.
+
+```bash
+python3 scripts/onboard.py            # interactive (also: --defaults, --set key=value, --reset)
+python3 scripts/onboard.py --show     # see the questions + current effective config
+```
+
+Answers are saved to `~/.config/research-ops/research-finance.json` (global) or `./.research-ops/research-finance.json` (`--scope project`) and are read automatically by `config_loader.py`. They set the default R&D-area **profile**, the default **F&A rate**, the **runway alert threshold**, the **accounting standard**, and the named **finance owner** printed on capitalize-vs-expense routing. CLI flags always override saved config; `RESEARCH_OPS_NO_CONFIG=1` ignores it.
+
+**The five questions:** R&D area · F&A rate · runway threshold · accounting standard · finance owner.
+
+## Optimize with autoresearch (opt-in)
+
+This skill ships an **isolated, opt-in** bridge to `engineering/autoresearch-agent`. Only when you ask to "optimize" / "extend runway" / "run a loop" does an autoresearch experiment iteratively improve a program plan against this skill's runway metric. `scripts/ar_evaluator.py` is the ground-truth evaluator; it prints `runway_months: <float>` (higher is better).
+
+```bash
+/ar:setup --domain custom --name extend-runway \
+  --target ledger.json \
+  --eval "python3 ar_evaluator.py --target ledger.json" \
+  --metric runway_months --direction higher
+/ar:loop custom/extend-runway
+```
+
+Isolated: no hard dependency — autoresearch runs only on demand, and the loop edits `ledger.json`, never the evaluator.
+
 ## References
 
 - `references/rd_program_finance_canon.md` — IAS 38 (research vs development); ASC 730 + ASC 985-20; Uniform Guidance 2 CFR 200 (F&A); FASB/IFRS capitalization criteria; NICRA basics.

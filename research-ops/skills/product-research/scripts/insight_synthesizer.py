@@ -19,8 +19,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from collections import defaultdict
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover
+    _cfg = None
 
 SAMPLE = {
     "study": "Onboarding discovery (mid-market HR)",
@@ -85,13 +92,16 @@ def _render_human(r: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Cluster coded observations into insights; flag anecdotes.")
     p.add_argument("--input", help="Path to JSON with observations[]")
-    p.add_argument("--min-sources", type=int, default=3, help="min distinct participants to call it an insight")
+    p.add_argument("--min-sources", type=int, default=None,
+                   help="min distinct participants to call it an insight (overrides onboarding)")
     p.add_argument("--output", choices=["human", "json"], default="human")
     p.add_argument("--sample", action="store_true", help="use the embedded sample")
     args = p.parse_args(argv)
 
+    conf = _cfg.load_config() if _cfg else {}
+    min_sources = args.min_sources if args.min_sources is not None else int(conf.get("insight_min_sources", 3))
     data = SAMPLE if (args.sample or not args.input) else json.load(open(args.input))
-    result = synthesize(data, args.min_sources)
+    result = synthesize(data, min_sources)
     if args.output == "json":
         print(json.dumps(result, indent=2))
     else:

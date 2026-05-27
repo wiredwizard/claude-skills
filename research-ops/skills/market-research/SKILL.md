@@ -51,6 +51,33 @@ Invoke this skill when:
 
 All three: stdlib-only, `--help`, `--sample`, `--output {human,json}`.
 
+## Onboarding & customization
+
+Run the onboarding questionnaire **once before you start** — it captures your defaults so every tool in this skill is pre-configured. Customization is the point: the answers actually change tool behavior.
+
+```bash
+python3 scripts/onboard.py            # interactive (also: --defaults, --set key=value, --reset)
+python3 scripts/onboard.py --show     # see the questions + current effective config
+```
+
+Answers are saved to `~/.config/research-ops/market-research.json` (global) or `./.research-ops/market-research.json` (`--scope project`) and are read automatically by `config_loader.py`. They set the default market **profile**, the default survey **confidence** and **margin of error**, and the default **sizing method**. CLI flags always override saved config; `RESEARCH_OPS_NO_CONFIG=1` ignores it.
+
+**The four questions:** market profile · survey confidence · margin of error · sizing method.
+
+## Optimize with autoresearch (opt-in)
+
+This skill ships an **isolated, opt-in** bridge to `engineering/autoresearch-agent`. Only when you ask to "optimize" / "reconcile the sizing" / "run a loop" does an autoresearch experiment iteratively reconcile your market model so top-down and bottoms-up triangulate. `scripts/ar_evaluator.py` is the ground-truth evaluator; it prints `tam_divergence: <fraction>` (**lower** is better).
+
+```bash
+/ar:setup --domain custom --name tam-triangulation \
+  --target market.json \
+  --eval "python3 ar_evaluator.py --target market.json" \
+  --metric tam_divergence --direction lower
+/ar:loop custom/tam-triangulation
+```
+
+Isolated: no hard dependency — autoresearch runs only on demand, and the loop edits `market.json`, never the evaluator.
+
 ## References
 
 - `references/market_sizing_canon.md` — TAM/SAM/SOM frameworks (Bessemer, a16z); top-down vs bottoms-up; Fermi estimation; market-model conventions; common sizing fallacies.

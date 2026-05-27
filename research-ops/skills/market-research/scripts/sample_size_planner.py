@@ -21,7 +21,14 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover
+    _cfg = None
 
 Z = {0.80: 1.2816, 0.85: 1.4395, 0.90: 1.6449, 0.95: 1.9600, 0.99: 2.5758}
 
@@ -140,20 +147,24 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Survey sample size with FPC + per-segment minima.")
     p.add_argument("--input", help="Path to JSON survey spec")
     p.add_argument("--population", type=float, default=None)
-    p.add_argument("--confidence", type=float, default=0.95)
-    p.add_argument("--moe", type=float, default=0.05, help="margin of error")
+    p.add_argument("--confidence", type=float, default=None, help="overrides onboarding default_confidence")
+    p.add_argument("--moe", type=float, default=None, help="margin of error (overrides onboarding default_moe)")
     p.add_argument("--proportion", type=float, default=0.5, help="expected proportion")
     p.add_argument("--output", choices=["human", "json"], default="human")
     p.add_argument("--sample", action="store_true", help="use the embedded sample")
     args = p.parse_args(argv)
+
+    conf = _cfg.load_config() if _cfg else {}
+    confidence = args.confidence if args.confidence is not None else conf.get("default_confidence", 0.95)
+    moe = args.moe if args.moe is not None else conf.get("default_moe", 0.05)
 
     if args.sample:
         data = SAMPLE
     elif args.input:
         data = json.load(open(args.input))
     else:
-        data = {"population": args.population, "confidence": args.confidence,
-                "margin_of_error": args.moe, "expected_proportion": args.proportion}
+        data = {"population": args.population, "confidence": confidence,
+                "margin_of_error": moe, "expected_proportion": args.proportion}
 
     try:
         result = plan(data)

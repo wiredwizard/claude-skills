@@ -18,7 +18,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover
+    _cfg = None
 
 PROFILES = ["b2b-saas", "consumer-app", "enterprise", "marketplace", "hardware", "platform"]
 
@@ -105,12 +112,16 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Select a product-research method from goal + stage.")
     p.add_argument("--goal", choices=["discovery", "evaluative", "validation"], default="discovery")
     p.add_argument("--stage", choices=["concept", "prototype", "beta", "live"], default="prototype")
-    p.add_argument("--profile", default="b2b-saas", choices=PROFILES)
+    p.add_argument("--profile", default=None, choices=PROFILES,
+                   help="overrides onboarding default_profile")
     p.add_argument("--output", choices=["human", "json"], default="human")
     p.add_argument("--sample", action="store_true", help="use the embedded sample")
     args = p.parse_args(argv)
 
-    goal, stage, profile = ("discovery", "prototype", "b2b-saas") if args.sample else (args.goal, args.stage, args.profile)
+    conf = _cfg.load_config() if _cfg else {}
+    profile_default = conf.get("default_profile", "b2b-saas")
+    goal, stage, profile = ("discovery", "prototype", profile_default) if args.sample \
+        else (args.goal, args.stage, args.profile or profile_default)
     try:
         result = design(goal, stage, profile)
     except ValueError as e:

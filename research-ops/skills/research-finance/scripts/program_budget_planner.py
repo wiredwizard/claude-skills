@@ -18,7 +18,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover
+    _cfg = None
 
 # Profile default F&A (indirect) rate and escalation assumption when not supplied in input.
 PROFILES = {
@@ -126,16 +133,25 @@ def _render_human(r: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Build a multi-period R&D program budget with F&A split.")
     p.add_argument("--input", help="Path to JSON program with work_packages[]")
-    p.add_argument("--profile", default="biotech", choices=list(PROFILES))
+    p.add_argument("--profile", default=None, choices=list(PROFILES),
+                   help="overrides onboarding default_profile")
     p.add_argument("--fa-rate", type=float, default=None, help="Override F&A rate (fraction, e.g. 0.55)")
     p.add_argument("--periods", type=int, default=None, help="Number of periods")
     p.add_argument("--output", choices=["human", "json"], default="human")
     p.add_argument("--sample", action="store_true", help="use the embedded sample")
     args = p.parse_args(argv)
 
+    conf = _cfg.load_config() if _cfg else {}
+    profile = args.profile or conf.get("default_profile", "biotech")
     data = SAMPLE if (args.sample or not args.input) else json.load(open(args.input))
     periods = args.periods or int(data.get("periods", 4))
-    fa_rate = args.fa_rate if args.fa_rate is not None else PROFILES[args.profile]["default_fa_rate"]
+    # F&A precedence: CLI flag > onboarding default_fa_rate (if set) > profile default
+    if args.fa_rate is not None:
+        fa_rate = args.fa_rate
+    elif conf.get("default_fa_rate") is not None:
+        fa_rate = float(conf["default_fa_rate"])
+    else:
+        fa_rate = PROFILES[profile]["default_fa_rate"]
 
     result = plan_budget(data, fa_rate, periods)
     if args.output == "json":

@@ -23,7 +23,14 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover - skill always ships config_loader
+    _cfg = None
 
 BANNER = "ESTIMATE ONLY — confirm with a biostatistician before finalizing the protocol."
 
@@ -141,7 +148,8 @@ def _render_human(result: dict) -> str:
         f"  - dropout inflation: {result.get('dropout_assumed')}",
         "  - The effect/difference/HR must trace to a published or anchor-based source.",
         "",
-        "Named owner required: a biostatistician must sign the final sample-size justification.",
+        f"Named owner required: {result.get('_biostatistician') or 'a biostatistician (run onboard.py to name one)'} "
+        "must sign the final sample-size justification.",
     ]
     return "\n".join(lines)
 
@@ -149,9 +157,9 @@ def _render_human(result: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Closed-form clinical sample-size / power estimates (ESTIMATE ONLY).")
     p.add_argument("--design", choices=["means", "proportions", "survival"], default="means")
-    p.add_argument("--alpha", type=float, default=0.05, help="two-sided alpha (0.10/0.05/0.025/0.01)")
-    p.add_argument("--power", type=float, default=0.80, help="target power (0.80/0.85/0.90/0.95/0.975)")
-    p.add_argument("--dropout", type=float, default=0.0, help="anticipated dropout fraction [0,1)")
+    p.add_argument("--alpha", type=float, default=None, help="two-sided alpha (0.10/0.05/0.025/0.01)")
+    p.add_argument("--power", type=float, default=None, help="target power (0.80/0.85/0.90/0.95/0.975)")
+    p.add_argument("--dropout", type=float, default=None, help="anticipated dropout fraction [0,1)")
     # means
     p.add_argument("--effect", type=float, default=0.5, help="Cohen's d (means design)")
     p.add_argument("--allocation", type=float, default=1.0, help="allocation ratio k = n2/n1 (means)")
@@ -165,18 +173,25 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--sample", action="store_true", help="run the embedded sample (means design)")
     args = p.parse_args(argv)
 
+    conf = _cfg.load_config() if _cfg else {}
+    alpha = args.alpha if args.alpha is not None else conf.get("default_alpha", 0.05)
+    power = args.power if args.power is not None else conf.get("default_power", 0.80)
+    dropout = args.dropout if args.dropout is not None else conf.get("default_dropout", 0.0)
+    biostat = (conf.get("owners") or {}).get("biostatistician")
+
     try:
         if args.sample:
-            result = estimate_means(0.5, 0.05, 0.80, 1.0, 0.15)
+            result = estimate_means(0.5, alpha, power, 1.0, dropout if dropout else 0.15)
         elif args.design == "means":
-            result = estimate_means(args.effect, args.alpha, args.power, args.allocation, args.dropout)
+            result = estimate_means(args.effect, alpha, power, args.allocation, dropout)
         elif args.design == "proportions":
-            result = estimate_proportions(args.p1, args.p2, args.alpha, args.power, args.dropout)
+            result = estimate_proportions(args.p1, args.p2, alpha, power, dropout)
         else:
-            result = estimate_survival(args.hr, args.alpha, args.power, args.prob_event, args.dropout)
+            result = estimate_survival(args.hr, alpha, power, args.prob_event, dropout)
     except ValueError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
+    result["_biostatistician"] = biostat
 
     if args.output == "json":
         result["_banner"] = BANNER

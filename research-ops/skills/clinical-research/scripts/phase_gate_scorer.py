@@ -29,7 +29,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover
+    _cfg = None
 
 BANNER = "ESTIMATE ONLY — a medical monitor + biostatistician + regulatory owner must sign the gate decision."
 
@@ -163,6 +170,20 @@ def evaluate(study: dict, profile_name: str, phase: int) -> dict:
     return score_plan(study, PROFILES[profile_name], phase)
 
 
+def _apply_named_owners(roles: list[str], owners: dict) -> list[str]:
+    """Replace generic owner roles with 'Role (Name)' when onboarding named them."""
+    role_to_key = {
+        "Biostatistician": "biostatistician",
+        "Medical Monitor": "medical_monitor",
+        "Regulatory Owner": "regulatory_owner",
+    }
+    out = []
+    for r in roles:
+        name = owners.get(role_to_key.get(r, ""))
+        out.append(f"{r} ({name})" if name else r)
+    return out
+
+
 def _render_human(r: dict) -> str:
     lines = [f"!! {BANNER}", "", f"Study: {r['study_id']}  (Phase {r['phase']})",
              f"Composite feasibility: {r['composite']}/100", f"Verdict: {r['verdict']}", ""]
@@ -183,19 +204,23 @@ def _render_human(r: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Score study feasibility and route a phase-gate verdict (ESTIMATE ONLY).")
     p.add_argument("--input", help="Path to JSON study plan")
-    p.add_argument("--profile", default="drug", choices=list(PROFILES))
+    p.add_argument("--profile", default=None, choices=list(PROFILES),
+                   help="overrides onboarding default_profile")
     p.add_argument("--phase", type=int, default=2, choices=[1, 2, 3, 4])
     p.add_argument("--output", choices=["human", "json"], default="human")
     p.add_argument("--sample", action="store_true", help="use the embedded sample")
     args = p.parse_args(argv)
 
+    conf = _cfg.load_config() if _cfg else {}
+    profile = args.profile or conf.get("default_profile", "drug")
     study = SAMPLE if (args.sample or not args.input) else json.load(open(args.input))
     phase = study.get("phase", args.phase) if (args.sample or not args.input) else args.phase
     try:
-        result = evaluate(study, args.profile, phase)
+        result = evaluate(study, profile, phase)
     except ValueError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
+    result["named_owners"] = _apply_named_owners(result["named_owners"], conf.get("owners") or {})
 
     if args.output == "json":
         result["_banner"] = BANNER

@@ -28,6 +28,11 @@ Run the `market-research` skill on this input:
 
 **A market size always travels with its method (both ways) and assumptions — never a single unsourced number.**
 
+## First run + optimization
+
+- **Onboard first:** `python3 scripts/onboard.py` (market profile, survey confidence, margin of error, sizing method) — saved config pre-configures every tool. `--show` lists the questions.
+- **Optimize (opt-in):** only if the user asks to reconcile the sizing/run a loop, hand off to autoresearch via `scripts/ar_evaluator.py` (`tam_divergence`, lower is better).
+
 ## Distinct from
 
 - `marketing-skill/campaign-analytics` — that measures a live campaign. This is upstream methodology.

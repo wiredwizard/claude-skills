@@ -29,7 +29,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import config_loader as _cfg
+except ImportError:  # pragma: no cover
+    _cfg = None
 
 BANNER = "ESTIMATE ONLY — endpoint selection must be confirmed by clinician + biostatistician + regulatory owner."
 
@@ -149,14 +156,17 @@ def _render_human(result: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Score and classify candidate clinical endpoints (ESTIMATE ONLY).")
     p.add_argument("--input", help="Path to JSON with {indication, endpoints[]}")
-    p.add_argument("--profile", default="drug", choices=list(PROFILES))
+    p.add_argument("--profile", default=None, choices=list(PROFILES),
+                   help="overrides onboarding default_profile")
     p.add_argument("--output", choices=["human", "json"], default="human")
     p.add_argument("--sample", action="store_true", help="use the embedded sample")
     args = p.parse_args(argv)
 
+    conf = _cfg.load_config() if _cfg else {}
+    profile = args.profile or conf.get("default_profile", "drug")
     data = SAMPLE if (args.sample or not args.input) else json.load(open(args.input))
     try:
-        result = evaluate(data, args.profile)
+        result = evaluate(data, profile)
     except ValueError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2

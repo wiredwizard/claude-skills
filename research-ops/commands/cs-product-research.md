@@ -28,6 +28,11 @@ Run the `product-research` skill on this input:
 
 **Method must match the goal, and an insight requires recurrence across independent participants.** A single quote is an anecdote, not a finding.
 
+## First run + optimization
+
+- **Onboard first:** `python3 scripts/onboard.py` (product profile, insight source-threshold, saturation method, high-stakes flag) — saved config pre-configures every tool. `--show` lists the questions.
+- **Optimize (opt-in):** only if the user asks to optimize the synthesis/run a loop, hand off to autoresearch via `scripts/ar_evaluator.py` (`validated_insights`, higher is better).
+
 ## Distinct from
 
 - `product-team/ux-researcher-designer` — that produces personas/journey artifacts. This is method + repository discipline.
