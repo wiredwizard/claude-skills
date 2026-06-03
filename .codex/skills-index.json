@@ -3,7 +3,7 @@
   "name": "claude-code-skills",
   "description": "Production-ready skill packages for AI agents - Marketing, Engineering, Product, C-Level, PM, and RA/QM",
   "repository": "https://github.com/alirezarezvani/claude-skills",
-  "total_skills": 342,
+  "total_skills": 343,
   "skills": [
     {
       "name": "business-growth-skills",
@@ -1680,6 +1680,12 @@
       "description": "X/Twitter growth engine for building audience, crafting viral content, and analyzing engagement. Use when the user wants to grow on X/Twitter, write tweets or threads, analyze their X profile, research competitors on X, plan a posting strategy, or optimize engagement. Complements social-content (generic multi-platform) with X-specific depth: algorithm mechanics, thread engineering, reply strategy, profile optimization, and competitive intelligence via web search."
     },
     {
+      "name": "youtube-full",
+      "source": "../../marketing-skill/skills/youtube-full",
+      "category": "marketing",
+      "description": "Use when the user needs YouTube transcripts, video search, channel browsing, playlist extraction, or content monitoring. Trigger phrases: 'get the transcript for', 'search YouTube for', 'what are the latest videos on', 'list this playlist', 'monitor this channel', or any request involving a YouTube URL, video ID, or @handle. Do NOT use for downloading video or audio files, YouTube engagement data (likes, comments), or private/age-restricted videos."
+    },
+    {
       "name": "agile-product-owner",
       "source": "../../product-team/agile-product-owner/skills/agile-product-owner",
       "category": "product",
@@ -2105,7 +2111,7 @@
       "description": "Financial analysis, valuation, and forecasting skills"
     },
     "marketing": {
-      "count": 47,
+      "count": 48,
       "source": "../../marketing-skill",
       "description": "Marketing, content, and demand generation skills"
     },
