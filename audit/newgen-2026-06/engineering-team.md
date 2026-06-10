@@ -300,6 +300,6 @@ None in scope. engineering-team/ ships no `commands/` directory; the `/pw:*` and
 | `google-workspace-cli` | Description repeats the unverifiable `gws` CLI claims; fix alongside the skill REWRITE. |
 | `playwright-pro` (name: `pw`) | Clean; "55+ templates, 3 agents" — template count not verified file-by-file but folder structure exists. |
 | `self-improving-agent` (name: `si`) | Clean; commands listed all exist as sub-skills. |
-| `snowflake-development` | Says "5 Python tools" → actually 1 script (`snowflake_query_helper.py`) per Quick Start; says "3 reference guides" — verify; count drift (E2). |
+| `snowflake-development` | Description's "query helper script, 3 reference guides" verified accurate (1 script, 3 refs). Clean. |
 
 Additional manifest-adjacent debt: 18 stale `.zip` archives at engineering-team root; engineering-team/CLAUDE.md documents 7 nonexistent script filenames and a "32 skills / 39+ tools" inventory that predates the security suite and sub-plugins.
