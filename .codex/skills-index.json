@@ -3,7 +3,7 @@
   "name": "claude-code-skills",
   "description": "Production-ready skill packages for AI agents - Marketing, Engineering, Product, C-Level, PM, and RA/QM",
   "repository": "https://github.com/alirezarezvani/claude-skills",
-  "total_skills": 343,
+  "total_skills": 344,
   "skills": [
     {
       "name": "business-growth-skills",
@@ -1012,6 +1012,12 @@
       "source": "../../engineering/skills/codebase-onboarding",
       "category": "engineering-advanced",
       "description": "Analyze a codebase and generate onboarding documentation for engineers, tech leads, and contractors. Fast fact-gathering and repeatable onboarding outputs. Use when onboarding a new engineer, writing architecture-overview docs for a new project, or producing tech-lead briefings for unfamiliar repos."
+    },
+    {
+      "name": "collab-proof",
+      "source": "../../engineering/collab-proof/skills/collab-proof",
+      "category": "engineering-advanced",
+      "description": "Use when you want to understand what Claude contributed vs what you drove in a session. Triggers on: /collab-proof, session retrospective, ai contribution analysis, collaboration evidence, what did claude do."
     },
     {
       "name": "data-quality-auditor",
@@ -2101,7 +2107,7 @@
       "description": "Software engineering and technical skills"
     },
     "engineering-advanced": {
-      "count": 77,
+      "count": 78,
       "source": "../../engineering",
       "description": "Advanced engineering skills - agents, RAG, MCP, CI/CD, databases, observability"
     },
