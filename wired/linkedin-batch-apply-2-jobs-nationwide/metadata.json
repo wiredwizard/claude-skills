@@ -1,0 +1,13 @@
+{
+  "name": "linkedin-batch-apply-2-jobs-nationwide",
+  "version": "2.0.0",
+  "description": "Automate applying to 2 remote LinkedIn jobs nationwide with location set to Harrisburg, PA",
+  "author": "Morgan Todd",
+  "updated": "2026-07-09",
+  "changes": [
+    "Reduced job applications from 3 to 2 per run",
+    "Changed location from Lewistown, PA to Harrisburg, PA",
+    "Scope expanded to nationwide remote positions (not geography-limited)"
+  ],
+  "compatibility": "Chrome browser with LinkedIn access, Claude with form interaction tools"
+}
